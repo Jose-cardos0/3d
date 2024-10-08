@@ -8,16 +8,24 @@
 //   );
 // }
 
+//react
+import { useRef } from "react";
+
 //importando canvas
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 
 //estrutura de ceu background
-import { Sky, OrbitControls, useGLTF } from "@react-three/drei";
+import { Stars, OrbitControls, useGLTF } from "@react-three/drei";
 
 function Helmet() {
   const { scene } = useGLTF("helmet.gltf");
+  const helmetRef = useRef();
 
-  return <primitive object={scene} scale={0.1} />;
+  useFrame(() => {
+    helmetRef.current.rotation.y += 0.01;
+  });
+
+  return <primitive ref={helmetRef} object={scene} scale={0.1} />;
 }
 
 export function Helmet3d() {
@@ -25,6 +33,7 @@ export function Helmet3d() {
     <Canvas style={{ height: "100%", width: "30%" }}>
       {/*controle da câmera */}
       <OrbitControls />
+      <Stars />
       {/* intensidade da luz no ambiente */}
       <ambientLight intensity={5} />
       {/* moveu a luz para mais perto e aumentou a intensidade*/}
